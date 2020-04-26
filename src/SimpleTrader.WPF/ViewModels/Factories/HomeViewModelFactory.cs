@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimpleTrader.WPF.ViewModels.Factories
+﻿namespace SimpleTrader.WPF.ViewModels.Factories
 {
     public class HomeViewModelFactory : ISimpleTraderViewModelFactory<HomeViewModel>
     {
