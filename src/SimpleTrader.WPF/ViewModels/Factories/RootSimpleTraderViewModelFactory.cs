@@ -8,14 +8,17 @@ namespace SimpleTrader.WPF.ViewModels.Factories
     {
         private readonly ISimpleTraderViewModelFactory<HomeViewModel> _homeViewModelFactory;
         private readonly ISimpleTraderViewModelFactory<PortfolioViewModel> _portfolioViewModelFactory;
+        private readonly ISimpleTraderViewModelFactory<LoginViewModel> _loginViewModelFactory;
         private readonly BuyViewModel _buyViewModel;
 
         public RootSimpleTraderViewModelFactory(ISimpleTraderViewModelFactory<HomeViewModel> homeViewModelFactory,
             ISimpleTraderViewModelFactory<PortfolioViewModel> portfolioViewModelFactory,
-            BuyViewModel buyViewModel)
+            BuyViewModel buyViewModel,
+            ISimpleTraderViewModelFactory<LoginViewModel> loginViewModelFactory)
         {
             _homeViewModelFactory = homeViewModelFactory;
             _portfolioViewModelFactory = portfolioViewModelFactory;
+            _loginViewModelFactory = loginViewModelFactory;
             _buyViewModel = buyViewModel;
         }
 
@@ -23,6 +26,9 @@ namespace SimpleTrader.WPF.ViewModels.Factories
         {
             switch (viewType)
             {
+                case ViewType.Login:
+                    return _loginViewModelFactory.CreateViewModel();
+
                 case ViewType.Home:
                     return _homeViewModelFactory.CreateViewModel();
 

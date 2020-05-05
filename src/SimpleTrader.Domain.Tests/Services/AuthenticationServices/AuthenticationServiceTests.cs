@@ -26,7 +26,6 @@ namespace SimpleTrader.Domain.Tests.Services.AuthenticationServices
             _mockPasswordHasher = new Mock<IPasswordHasher>();
             _mockAccountService = new Mock<IAccountService>();
             _authenticationService = new AuthenticationService(_mockAccountService.Object, _mockPasswordHasher.Object);
-
         }
 
         [Test]
