@@ -1,6 +1,7 @@
 ﻿using SimpleTrader.Domain.Models;
 using SimpleTrader.Domain.Services.AuthenticationServices;
 
+using System;
 using System.Threading.Tasks;
 
 namespace SimpleTrader.WPF.State.Authenticators
@@ -9,6 +10,8 @@ namespace SimpleTrader.WPF.State.Authenticators
     {
         Account CurrentAccount { get; }
         bool IsLoggedIn { get; }
+
+        event Action StateChanged;
 
         Task<RegistrationResult> Register(string email, string username, string password, string confirmPassword);
 
