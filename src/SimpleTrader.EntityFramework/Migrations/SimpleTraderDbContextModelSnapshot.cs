@@ -15,16 +15,16 @@ namespace SimpleTrader.EntityFramework.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "3.1.3");
 
             modelBuilder.Entity("SimpleTrader.Domain.Models.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("AccountHolderId")
                         .HasColumnType("int");
@@ -44,7 +44,7 @@ namespace SimpleTrader.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("AccountId")
                         .HasColumnType("int");
@@ -70,7 +70,7 @@ namespace SimpleTrader.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("DateJoined")
                         .HasColumnType("datetime2");
@@ -94,6 +94,8 @@ namespace SimpleTrader.EntityFramework.Migrations
                     b.HasOne("SimpleTrader.Domain.Models.User", "AccountHolder")
                         .WithMany()
                         .HasForeignKey("AccountHolderId");
+
+                    b.Navigation("AccountHolder");
                 });
 
             modelBuilder.Entity("SimpleTrader.Domain.Models.AssetTransaction", b =>
@@ -107,7 +109,7 @@ namespace SimpleTrader.EntityFramework.Migrations
                             b1.Property<int>("AssetTransactionId")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("int")
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                                .UseIdentityColumn();
 
                             b1.Property<double>("PricePerShare")
                                 .HasColumnType("float");
@@ -122,6 +124,15 @@ namespace SimpleTrader.EntityFramework.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AssetTransactionId");
                         });
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Asset");
+                });
+
+            modelBuilder.Entity("SimpleTrader.Domain.Models.Account", b =>
+                {
+                    b.Navigation("AssetTransactions");
                 });
 #pragma warning restore 612, 618
         }
