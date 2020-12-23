@@ -12,12 +12,12 @@ namespace SimpleTrader.EntityFramework.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    DateJoined = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Username = table.Column<string>(type: "TEXT", nullable: true),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    DateJoined = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,10 +28,10 @@ namespace SimpleTrader.EntityFramework.Migrations
                 name: "Accounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountHolderId = table.Column<int>(nullable: true),
-                    Balance = table.Column<double>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AccountHolderId = table.Column<int>(type: "INTEGER", nullable: true),
+                    Balance = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,14 +48,13 @@ namespace SimpleTrader.EntityFramework.Migrations
                 name: "AssetTransactions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountId = table.Column<int>(nullable: true),
-                    IsPurchase = table.Column<bool>(nullable: false),
-                    Stock_Symbol = table.Column<string>(nullable: true),
-                    Stock_PricePerShare = table.Column<double>(nullable: true),
-                    Shares = table.Column<int>(nullable: false),
-                    DateProcessed = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    AccountId = table.Column<int>(type: "INTEGER", nullable: true),
+                    IsPurchase = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Asset_Symbol = table.Column<string>(type: "TEXT", nullable: true),
+                    Asset_PricePerShare = table.Column<double>(type: "REAL", nullable: true),
+                    Shares = table.Column<int>(type: "INTEGER", nullable: false),
+                    DateProcessed = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

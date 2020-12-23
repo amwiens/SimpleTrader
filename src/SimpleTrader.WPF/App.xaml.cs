@@ -18,7 +18,7 @@ using SimpleTrader.WPF.State.Authenticators;
 using SimpleTrader.WPF.State.Navigators;
 using SimpleTrader.WPF.ViewModels;
 using SimpleTrader.WPF.ViewModels.Factories;
-
+using System;
 using System.Windows;
 
 namespace SimpleTrader.WPF
@@ -48,9 +48,10 @@ namespace SimpleTrader.WPF
                     string apiKey = context.Configuration.GetValue<string>("FINANCE_API_KEY");
                     services.AddSingleton<FinancialModelingPrepHttpClientFactory>(new FinancialModelingPrepHttpClientFactory(apiKey));
 
-                    string connectionString = context.Configuration.GetConnectionString("default");
-                    services.AddDbContext<SimpleTraderDbContext>(o => o.UseSqlServer(connectionString));
-                    services.AddSingleton<SimpleTraderDbContextFactory>(new SimpleTraderDbContextFactory(connectionString));
+                    string connectionString = context.Configuration.GetConnectionString("sqlite");
+                    Action<DbContextOptionsBuilder> configureDbContext = o => o.UseSqlite(connectionString);
+                    services.AddDbContext<SimpleTraderDbContext>(configureDbContext);
+                    services.AddSingleton<SimpleTraderDbContextFactory>(new SimpleTraderDbContextFactory(configureDbContext));
                     services.AddSingleton<IAuthenticationService, AuthenticationService>();
                     services.AddSingleton<IDataService<Account>, AccountDataService>();
                     services.AddSingleton<IAccountService, AccountDataService>();
@@ -117,6 +118,12 @@ namespace SimpleTrader.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             _host.Start();
+
+            SimpleTraderDbContextFactory contextFactory = _host.Services.GetRequiredService<SimpleTraderDbContextFactory>();
+            using (SimpleTraderDbContext context = contextFactory.CreateDbContext())
+            {
+                context.Database.Migrate();
+            }
 
             Window window = _host.Services.GetRequiredService<MainWindow>();
             window.Show();
