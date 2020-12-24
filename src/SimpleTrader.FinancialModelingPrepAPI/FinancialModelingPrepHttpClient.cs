@@ -1,24 +1,26 @@
 ﻿using Newtonsoft.Json;
 
-using System;
+using SimpleTrader.FinancialModelingPrepAPI.Models;
+
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SimpleTrader.FinancialModelingPrepAPI
 {
-    public class FinancialModelingPrepHttpClient : HttpClient
+    public class FinancialModelingPrepHttpClient
     {
+        private readonly HttpClient _client;
         private readonly string _apiKey;
 
-        public FinancialModelingPrepHttpClient(string apiKey)
+        public FinancialModelingPrepHttpClient(HttpClient client, FinancialModelingPrepAPIKey apiKey)
         {
-            this.BaseAddress = new Uri("https://financialmodelingprep.com/api/v3/");
-            _apiKey = apiKey;
+            _client = client;
+            _apiKey = apiKey.Key;
         }
 
         public async Task<T> GetAsync<T>(string uri)
         {
-            HttpResponseMessage response = await GetAsync($"{uri}?apikey={_apiKey}");
+            HttpResponseMessage response = await _client.GetAsync($"{uri}?apikey={_apiKey}");
             string jsonResponse = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<T>(jsonResponse);
